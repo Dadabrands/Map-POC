@@ -1,0 +1,49 @@
+const Polygon = require("../models/polygonModel");
+// const AppError = require("../utils/appError");
+// const catchAsync = require("../utils/catchAsync");
+
+exports.savePolygon = async (req, res) => {
+  const { name, coordinates } = req.body;
+
+  try {
+    const newPolygon = new Polygon({
+      name,
+      coordinates,
+    });
+
+    await newPolygon.save();
+
+    res
+      .status(201)
+      .json({ message: "Polygon saved successfully", polygon: newPolygon });
+  } catch (error) {
+    console.error("Error saving polygon:", error);
+    res.status(500).json({ error: "Failed to save polygon" });
+  }
+};
+
+// Controller to fetch all polygons
+exports.getAllPolygons = async (req, res) => {
+  try {
+    const polygons = await Polygon.find();
+    res.status(200).json(polygons);
+  } catch (error) {
+    console.error("Error fetching polygons:", error);
+    res.status(500).json({ error: "Failed to fetch polygons" });
+  }
+};
+
+// Controller to fetch a single polygon by ID
+exports.getPolygonById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const polygon = await Polygon.findById(id);
+    if (!polygon) {
+      return res.status(404).json({ error: "Polygon not found" });
+    }
+    res.status(200).json(polygon);
+  } catch (error) {
+    console.error(`Error fetching polygon with ID ${id}:`, error);
+    res.status(500).json({ error: "Failed to fetch polygon" });
+  }
+};
