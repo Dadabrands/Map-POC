@@ -243,6 +243,7 @@ const EditableMap = ({ coordinates, clearCoordinates, handleSetCord }) => {
     if (clearCoordinates) {
       drawnItemsRef.current.clearLayers();
     }
+    console.log("hii")
   }, [clearCoordinates]);
   useEffect(() => {
     const drawnItems = new L.FeatureGroup();
